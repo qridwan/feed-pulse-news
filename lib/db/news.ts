@@ -1,7 +1,8 @@
-import { Status } from "@prisma/client";
+import { Prisma, Status } from "@prisma/client";
 import { prisma } from "../prisma";
 import type {
   PublishedNewsFilters,
+  AdminNewsFilters,
   PaginatedResult,
   CreateNewsInput,
   UpdateNewsInput,
@@ -40,7 +41,7 @@ export async function getPublishedNews(
       sourceSlug,
     } = filters;
 
-    const where: Parameters<typeof prisma.news.findMany>[0]["where"] = {
+    const where: Prisma.NewsWhereInput = {
       status: Status.PUBLISHED,
     };
 
@@ -78,6 +79,60 @@ export async function getPublishedNews(
 }
 
 /**
+ * Get news for admin listing with filters, all statuses.
+ */
+export async function getAdminNews(
+  filters: AdminNewsFilters = {},
+): Promise<PaginatedResult<NewsWithRelations>> {
+  try {
+    const {
+      page = 1,
+      pageSize = 20,
+      search,
+      status,
+      sourceId,
+      sortBy = "date",
+      sortOrder = "desc",
+    } = filters;
+
+    const where: Prisma.NewsWhereInput = {};
+
+    if (search?.trim()) {
+      where.title = { contains: search.trim(), mode: "insensitive" };
+    }
+    if (status) where.status = status;
+    if (sourceId) where.sourceId = sourceId;
+
+    const orderBy =
+      sortBy === "title"
+        ? { title: sortOrder }
+        : { publishedDate: sortOrder };
+
+    const [items, total] = await Promise.all([
+      prisma.news.findMany({
+        where,
+        include: defaultInclude,
+        orderBy,
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      prisma.news.count({ where }),
+    ]);
+
+    return {
+      items,
+      total,
+      page,
+      pageSize,
+      totalPages: Math.ceil(total / pageSize),
+    };
+  } catch (error) {
+    console.error("[getAdminNews]", error);
+    throw error;
+  }
+}
+
+/**
  * Get a single news article by slug (any status).
  */
 export async function getNewsBySlug(
@@ -91,6 +146,24 @@ export async function getNewsBySlug(
     return news as NewsWithRelations | null;
   } catch (error) {
     console.error("[getNewsBySlug]", error);
+    throw error;
+  }
+}
+
+/**
+ * Get a single news article by ID (any status).
+ */
+export async function getNewsById(
+  id: string,
+): Promise<NewsWithRelations | null> {
+  try {
+    const news = await prisma.news.findUnique({
+      where: { id },
+      include: defaultInclude,
+    });
+    return news as NewsWithRelations | null;
+  } catch (error) {
+    console.error("[getNewsById]", error);
     throw error;
   }
 }
@@ -153,17 +226,20 @@ export async function createNews(
 }
 
 /**
- * Update a news article; tagIds replace existing tags.
+ * Update a news article; tagIds replace existing tags; images replace existing NewsImages.
  */
 export async function updateNews(
   id: string,
   data: UpdateNewsInput,
 ): Promise<NewsWithRelations> {
   try {
-    const { tagIds, ...newsData } = data;
+    const { tagIds, images, ...newsData } = data;
     const news = await prisma.$transaction(async (tx) => {
       if (tagIds !== undefined) {
         await tx.newsTag.deleteMany({ where: { newsId: id } });
+      }
+      if (images !== undefined) {
+        await tx.newsImage.deleteMany({ where: { newsId: id } });
       }
       const updated = await tx.news.update({
         where: { id },
@@ -171,6 +247,16 @@ export async function updateNews(
           ...newsData,
           ...(tagIds?.length
             ? { newsTags: { create: tagIds.map((tagId) => ({ tagId })) } }
+            : {}),
+          ...(images?.length
+            ? {
+                images: {
+                  create: images.map((img) => ({
+                    url: img.url,
+                    caption: img.caption ?? null,
+                  })),
+                },
+              }
             : {}),
         },
         include: defaultInclude,

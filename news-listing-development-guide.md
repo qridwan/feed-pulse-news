@@ -427,7 +427,7 @@ Requirements:
 
 5. Styling:
    - Use Tailwind CSS
-   - Modern admin panel aesthetic
+   - Modern admin panel aesthetic and ios vibe
    - Active route highlighting
    - Smooth transitions
 
@@ -620,7 +620,7 @@ Create API routes for news management:
    - Cascade delete related images from Supabase
 
 Features:
-- Use Next.js 14 route handlers
+- Use Next.js 16 route handlers
 - Proper error handling with try-catch
 - Zod validation for request bodies
 - Return consistent JSON responses

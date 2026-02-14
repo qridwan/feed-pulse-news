@@ -16,6 +16,19 @@ export interface PublishedNewsFilters {
   sourceSlug?: string;
 }
 
+export type AdminNewsSortBy = "date" | "title";
+export type AdminNewsSortOrder = "asc" | "desc";
+
+export interface AdminNewsFilters {
+  page?: number;
+  pageSize?: number;
+  search?: string;
+  status?: Status;
+  sourceId?: string;
+  sortBy?: AdminNewsSortBy;
+  sortOrder?: AdminNewsSortOrder;
+}
+
 export interface PaginatedResult<T> {
   items: T[];
   total: number;
@@ -50,6 +63,7 @@ export interface UpdateNewsInput {
   status?: Status;
   sourceId?: string;
   tagIds?: string[];
+  images?: { url: string; caption?: string | null }[];
 }
 
 export type NewsWithRelations = News & {

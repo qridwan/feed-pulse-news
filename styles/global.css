@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+/* Tell Tailwind where to scan for class names (paths relative to this file) */
+@source "../app";
+@source "../components";
