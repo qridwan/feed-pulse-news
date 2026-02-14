@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
-import { uploadImage, getPublicUrl, BUCKETS } from "@/lib/supabase/storage";
-
-const BUCKET = BUCKETS.NEWS_IMAGES;
-const MAX_SIZE = 5 * 1024 * 1024; // 5MB
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+import { BUCKETS } from "@/lib/supabase/storage";
+import {
+  MAX_FILE_SIZE_BYTES,
+  isAllowedBucket,
+  isAllowedMimeType,
+} from "@/lib/supabase/bucket-config";
+import {
+  uploadToSupabase,
+  getPublicUrl,
+} from "@/lib/supabase/storage-helpers";
 
 export async function POST(request: NextRequest) {
   const user = await getCurrentUser();
@@ -16,30 +21,27 @@ export async function POST(request: NextRequest) {
   try {
     formData = await request.formData();
   } catch {
-    return NextResponse.json(
-      { error: "Invalid form data" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Invalid form data" }, { status: 400 });
   }
 
   const file = formData.get("file");
   if (!file || !(file instanceof File)) {
     return NextResponse.json(
       { error: "Missing or invalid file" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
-  if (!ALLOWED_TYPES.includes(file.type)) {
+  if (!isAllowedMimeType(file.type)) {
     return NextResponse.json(
       { error: "Invalid file type. Use JPEG, PNG, WebP or GIF." },
-      { status: 400 }
+      { status: 400 },
     );
   }
-  if (file.size > MAX_SIZE) {
+  if (file.size > MAX_FILE_SIZE_BYTES) {
     return NextResponse.json(
       { error: "File too large. Max 5MB." },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -51,22 +53,24 @@ export async function POST(request: NextRequest) {
     : "jpg";
   const path = `uploads/${Date.now()}-${Math.random().toString(36).slice(2, 9)}.${safeExt}`;
 
+  const bucketParam = request.nextUrl.searchParams.get("bucket");
+  const bucket = bucketParam && isAllowedBucket(bucketParam)
+    ? bucketParam
+    : BUCKETS.NEWS_IMAGES;
+
   const buffer = await file.arrayBuffer();
-  const { path: uploadedPath, error } = await uploadImage(
-    new Uint8Array(buffer),
-    BUCKET,
+  const { path: uploadedPath, error } = await uploadToSupabase(
+    new File([buffer], file.name, { type: file.type }),
+    bucket,
     path,
-    { contentType: file.type }
+    { contentType: file.type },
   );
 
   if (error || !uploadedPath) {
     console.error("[upload]", error);
-    return NextResponse.json(
-      { error: "Upload failed" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 
-  const url = getPublicUrl(BUCKET, uploadedPath);
+  const url = getPublicUrl(bucket, uploadedPath);
   return NextResponse.json({ url, path: uploadedPath });
 }

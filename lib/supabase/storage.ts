@@ -1,17 +1,8 @@
 import type { TransformOptions } from "@supabase/storage-js";
 import { createServiceRoleClient } from "./server";
 
-// ---------------------------------------------------------------------------
-// Bucket configuration
-// Create these buckets in Supabase Dashboard → Storage (e.g. public access for reading).
-// ---------------------------------------------------------------------------
-
-export const BUCKETS = {
-  NEWS_IMAGES: "news-images",
-  SOURCE_LOGOS: "source-logos",
-} as const;
-
-export type StorageBucket = (typeof BUCKETS)[keyof typeof BUCKETS];
+export { BUCKETS } from "./bucket-config";
+export type { StorageBucket } from "./bucket-config";
 
 // ---------------------------------------------------------------------------
 // Upload / delete / URL

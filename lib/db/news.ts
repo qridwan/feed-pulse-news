@@ -38,7 +38,9 @@ export async function getPublishedNews(
       dateFrom,
       dateTo,
       sourceId,
+      sourceIds,
       sourceSlug,
+      tagSlug,
     } = filters;
 
     const where: Prisma.NewsWhereInput = {
@@ -51,8 +53,13 @@ export async function getPublishedNews(
       if (dateTo) (where.publishedDate as { lte?: Date }).lte = dateTo;
     }
 
-    if (sourceId) where.sourceId = sourceId;
-    if (sourceSlug) where.source = { slug: sourceSlug };
+    if (sourceIds?.length) where.sourceId = { in: sourceIds };
+    else if (sourceId) where.sourceId = sourceId;
+    else if (sourceSlug) where.source = { slug: sourceSlug };
+
+    if (tagSlug) {
+      where.newsTags = { some: { tag: { slug: tagSlug } } };
+    }
 
     const [items, total] = await Promise.all([
       prisma.news.findMany({
@@ -267,6 +274,46 @@ export async function updateNews(
   } catch (error) {
     console.error("[updateNews]", error);
     throw error;
+  }
+}
+
+/**
+ * Get related published news (same source), excluding the given slug.
+ */
+export async function getRelatedNews(
+  slug: string,
+  sourceId: string,
+  limit = 4
+): Promise<NewsWithRelations[]> {
+  try {
+    const items = await prisma.news.findMany({
+      where: {
+        slug: { not: slug },
+        sourceId,
+        status: Status.PUBLISHED,
+      },
+      include: defaultInclude,
+      orderBy: { publishedDate: "desc" },
+      take: limit,
+    });
+    return items as NewsWithRelations[];
+  } catch (error) {
+    console.error("[getRelatedNews]", error);
+    return [];
+  }
+}
+
+/**
+ * Increment view count for a news article by slug.
+ */
+export async function incrementViewCount(slug: string): Promise<void> {
+  try {
+    await prisma.news.updateMany({
+      where: { slug },
+      data: { views: { increment: 1 } },
+    });
+  } catch (error) {
+    console.error("[incrementViewCount]", error);
   }
 }
 

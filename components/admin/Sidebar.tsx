@@ -9,6 +9,7 @@ const navItems = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/news", label: "News Management" },
   { href: "/admin/sources", label: "Source Management" },
+  { href: "/admin/storage", label: "Storage" },
 ];
 
 export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {

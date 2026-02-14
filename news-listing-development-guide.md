@@ -807,7 +807,7 @@ Features:
 
 Styling:
 - Tailwind CSS
-- Modern card design
+- Modern card design with ios / macos vibe
 - Aspect ratio for images (16:9)
 - Clean typography
 

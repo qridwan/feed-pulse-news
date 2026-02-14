@@ -13,7 +13,9 @@ export interface PublishedNewsFilters {
   dateFrom?: Date;
   dateTo?: Date;
   sourceId?: string;
+  sourceIds?: string[];
   sourceSlug?: string;
+  tagSlug?: string;
 }
 
 export type AdminNewsSortBy = "date" | "title";
@@ -79,7 +81,7 @@ export type NewsWithRelations = News & {
 
 export interface CreateSourceInput {
   name: string;
-  slug: string;
+  slug?: string;
   website: string;
   logoUrl?: string | null;
   description?: string | null;
@@ -94,6 +96,21 @@ export interface UpdateSourceInput {
   description?: string | null;
   isActive?: boolean;
 }
+
+export type AdminSourceSortBy = "name" | "newsCount";
+export type AdminSourceSortOrder = "asc" | "desc";
+
+export interface AdminSourceFilters {
+  page?: number;
+  pageSize?: number;
+  search?: string;
+  /** "true" | "false" | "" for all */
+  active?: string;
+  sortBy?: AdminSourceSortBy;
+  sortOrder?: AdminSourceSortOrder;
+}
+
+export type SourceWithNewsCount = Source & { _count: { news: number } };
 
 // ---------------------------------------------------------------------------
 // Tag
