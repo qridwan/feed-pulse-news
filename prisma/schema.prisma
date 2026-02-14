@@ -1,0 +1,123 @@
+// News Listing Application - Prisma Schema
+// PostgreSQL datasource; run migrations with: npx prisma migrate dev
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+enum Status {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+// ---------------------------------------------------------------------------
+// Admin (synced with Supabase Auth)
+// ---------------------------------------------------------------------------
+
+model Admin {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique
+  supabaseId String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  news News[]
+}
+
+// ---------------------------------------------------------------------------
+// Source (news outlet / publisher)
+// ---------------------------------------------------------------------------
+
+model Source {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @unique
+  slug        String   @unique
+  website     String
+  logoUrl     String?
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  news News[]
+
+  @@index([slug, isActive])
+}
+
+// ---------------------------------------------------------------------------
+// News (article)
+// ---------------------------------------------------------------------------
+
+model News {
+  id               String    @id @default(uuid()) @db.Uuid
+  title            String
+  slug             String    @unique
+  publishedDate    DateTime
+  newsLink         String?
+  shortDescription String
+  fullContent      String    @db.Text
+  thumbnailUrl     String?
+  status           Status    @default(DRAFT)
+  views           Int       @default(0)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  authorId  String  @db.Uuid
+  author    Admin   @relation(fields: [authorId], references: [id], onDelete: Restrict)
+  sourceId  String  @db.Uuid
+  source    Source  @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+
+  images   NewsImage[]
+  newsTags NewsTag[]
+
+  @@index([publishedDate, status])
+  @@index([slug])
+  @@index([sourceId])
+}
+
+// ---------------------------------------------------------------------------
+// NewsImage (inline images for a news article)
+// ---------------------------------------------------------------------------
+
+model NewsImage {
+  id        String   @id @default(uuid()) @db.Uuid
+  url       String
+  caption   String?
+  createdAt DateTime @default(now())
+
+  newsId String @db.Uuid
+  news   News   @relation(fields: [newsId], references: [id], onDelete: Cascade)
+}
+
+// ---------------------------------------------------------------------------
+// Tag & NewsTag (many-to-many: News <-> Tag)
+// ---------------------------------------------------------------------------
+
+model Tag {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  newsTags NewsTag[]
+}
+
+model NewsTag {
+  newsId String @db.Uuid
+  tagId  String @db.Uuid
+  news   News   @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([newsId, tagId])
+  @@index([tagId])
+}

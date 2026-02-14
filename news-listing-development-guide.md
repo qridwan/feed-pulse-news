@@ -366,6 +366,7 @@ UI Requirements:
 - Submit button with loading state
 - Error message display
 - Responsive design (mobile-friendly)
+- Minimal with IOS theme / vibe
 
 Functionality:
 - Use react-hook-form for form management
