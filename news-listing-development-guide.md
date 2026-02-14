@@ -1,11 +1,13 @@
 # News Listing App - Step-by-Step Development Guide
 
 ## 📋 Overview
+
 This guide breaks down the development of the News Listing Application into manageable steps with specific prompts for AI assistants or developers.
 
 ---
 
 ## 🗂️ Table of Contents
+
 1. [Phase 1: Project Setup & Infrastructure](#phase-1-project-setup--infrastructure)
 2. [Phase 2: Database & Prisma Setup](#phase-2-database--prisma-setup)
 3. [Phase 3: Authentication System](#phase-3-authentication-system)
@@ -23,8 +25,9 @@ This guide breaks down the development of the News Listing Application into mana
 ### Step 1.1: Initialize Next.js Project
 
 **Prompt:**
+
 ```
-Create a new Next.js 14 project with TypeScript, Tailwind CSS, and App Router. 
+Create a new Next.js 16 project with TypeScript, Tailwind CSS, and App Router.
 Configure it with the following requirements:
 - TypeScript strict mode enabled
 - ESLint with Next.js recommended config
@@ -44,6 +47,7 @@ Provide the complete package.json with all necessary dependencies.
 ```
 
 **Expected Deliverables:**
+
 - `package.json` with dependencies
 - `next.config.js` configuration
 - `tsconfig.json` with path aliases
@@ -56,6 +60,7 @@ Provide the complete package.json with all necessary dependencies.
 ### Step 1.2: Environment Configuration
 
 **Prompt:**
+
 ```
 Set up environment variables for the News Listing Application with:
 1. Create .env.local and .env.example files
@@ -72,6 +77,7 @@ Also create a lib/env.ts file with Zod validation for environment variables.
 ```
 
 **Expected Deliverables:**
+
 - `.env.example` template
 - `.gitignore` updated
 - `lib/env.ts` with validation
@@ -82,6 +88,7 @@ Also create a lib/env.ts file with Zod validation for environment variables.
 ### Step 1.3: Install Core Dependencies
 
 **Prompt:**
+
 ```
 Install and configure the following dependencies for a Next.js news listing application:
 
@@ -105,6 +112,7 @@ Provide the complete installation command and any necessary configuration files.
 ```
 
 **Expected Deliverables:**
+
 - Installation commands
 - `jest.config.js`
 - `playwright.config.ts`
@@ -117,6 +125,7 @@ Provide the complete installation command and any necessary configuration files.
 ### Step 2.1: Create Prisma Schema
 
 **Prompt:**
+
 ```
 Create a complete Prisma schema for a news listing application with the following models:
 
@@ -162,6 +171,7 @@ Add the Status enum and configure PostgreSQL as the datasource.
 ```
 
 **Expected Deliverables:**
+
 - `prisma/schema.prisma` complete file
 - Proper relations and indexes
 - Enum definitions
@@ -171,6 +181,7 @@ Add the Status enum and configure PostgreSQL as the datasource.
 ### Step 2.2: Initialize Database & Migrations
 
 **Prompt:**
+
 ```
 Create scripts and commands to:
 1. Initialize Prisma with PostgreSQL
@@ -189,6 +200,7 @@ Also create a lib/prisma.ts file with a singleton Prisma Client instance that wo
 ```
 
 **Expected Deliverables:**
+
 - `prisma/seed.ts` with sample data
 - `lib/prisma.ts` singleton client
 - Migration files
@@ -199,6 +211,7 @@ Also create a lib/prisma.ts file with a singleton Prisma Client instance that wo
 ### Step 2.3: Create Database Utilities
 
 **Prompt:**
+
 ```
 Create utility functions in lib/db/ for common database operations:
 
@@ -229,6 +242,7 @@ Use Prisma transactions where necessary.
 ```
 
 **Expected Deliverables:**
+
 - `lib/db/news.ts` with CRUD functions
 - `lib/db/sources.ts` with CRUD functions
 - `lib/db/tags.ts` with tag operations
@@ -241,6 +255,7 @@ Use Prisma transactions where necessary.
 ### Step 3.1: Configure Supabase
 
 **Prompt:**
+
 ```
 Create configuration for Supabase integration:
 
@@ -260,6 +275,7 @@ Create helper functions for image optimization (resize, WebP conversion).
 ```
 
 **Expected Deliverables:**
+
 - `lib/supabase/client.ts`
 - `lib/supabase/server.ts`
 - `lib/supabase/storage.ts`
@@ -270,6 +286,7 @@ Create helper functions for image optimization (resize, WebP conversion).
 ### Step 3.2: Setup NextAuth
 
 **Prompt:**
+
 ```
 Configure NextAuth for admin authentication:
 
@@ -293,6 +310,7 @@ Include proper TypeScript typing and security best practices.
 ```
 
 **Expected Deliverables:**
+
 - `app/api/auth/[...nextauth]/route.ts`
 - `lib/auth/index.ts` utilities
 - `types/next-auth.d.ts` type extensions
@@ -303,6 +321,7 @@ Include proper TypeScript typing and security best practices.
 ### Step 3.3: Create Middleware & Route Protection
 
 **Prompt:**
+
 ```
 Create Next.js middleware for route protection:
 
@@ -326,6 +345,7 @@ Test cases to consider:
 ```
 
 **Expected Deliverables:**
+
 - `middleware.ts` with route protection
 - `lib/auth/guards.ts` with HOCs
 - Configuration for matcher patterns
@@ -335,6 +355,7 @@ Test cases to consider:
 ### Step 3.4: Build Login Page
 
 **Prompt:**
+
 ```
 Create the admin login page at app/admin/login/page.tsx:
 
@@ -364,6 +385,7 @@ Also create a simple logo/header component for branding.
 ```
 
 **Expected Deliverables:**
+
 - `app/admin/login/page.tsx`
 - Login form component
 - Validation schema
@@ -376,6 +398,7 @@ Also create a simple logo/header component for branding.
 ### Step 4.1: Create Admin Layout
 
 **Prompt:**
+
 ```
 Create admin layout at app/admin/layout.tsx:
 
@@ -414,6 +437,7 @@ Create reusable components:
 ```
 
 **Expected Deliverables:**
+
 - `app/admin/layout.tsx`
 - `components/admin/Sidebar.tsx`
 - `components/admin/Header.tsx`
@@ -424,6 +448,7 @@ Create reusable components:
 ### Step 4.2: Build News List Page
 
 **Prompt:**
+
 ```
 Create app/admin/news/page.tsx - Admin news listing page:
 
@@ -463,6 +488,7 @@ Create reusable components for table, filters, and pagination.
 ```
 
 **Expected Deliverables:**
+
 - `app/admin/news/page.tsx`
 - `components/admin/NewsTable.tsx`
 - `components/admin/NewsFilters.tsx`
@@ -474,6 +500,7 @@ Create reusable components for table, filters, and pagination.
 ### Step 4.3: Create News Form Component
 
 **Prompt:**
+
 ```
 Create a reusable news form component at components/admin/NewsForm.tsx:
 
@@ -515,6 +542,7 @@ Create supporting components:
 ```
 
 **Expected Deliverables:**
+
 - `components/admin/NewsForm.tsx`
 - `components/admin/ImageUpload.tsx`
 - `components/admin/RichTextEditor.tsx`
@@ -527,6 +555,7 @@ Create supporting components:
 ### Step 4.4: Create & Edit News Pages
 
 **Prompt:**
+
 ```
 Create news create and edit pages:
 
@@ -559,6 +588,7 @@ Create helper functions:
 ```
 
 **Expected Deliverables:**
+
 - `app/admin/news/create/page.tsx`
 - `app/admin/news/[id]/edit/page.tsx`
 - Image upload helpers
@@ -569,6 +599,7 @@ Create helper functions:
 ### Step 4.5: News API Routes
 
 **Prompt:**
+
 ```
 Create API routes for news management:
 
@@ -602,6 +633,7 @@ Include TypeScript types for request/response.
 ```
 
 **Expected Deliverables:**
+
 - `app/api/admin/news/route.ts` (GET, POST)
 - `app/api/admin/news/[id]/route.ts` (GET, PUT, DELETE)
 - `lib/validations/news.ts` validation schemas
@@ -614,6 +646,7 @@ Include TypeScript types for request/response.
 ### Step 5.1: Source List Page
 
 **Prompt:**
+
 ```
 Create app/admin/sources/page.tsx - Source management page:
 
@@ -651,6 +684,7 @@ Reuse pagination and filter components from news.
 ```
 
 **Expected Deliverables:**
+
 - `app/admin/sources/page.tsx`
 - `components/admin/SourceCard.tsx` or `SourceTable.tsx`
 - `components/admin/SourceFilters.tsx`
@@ -661,6 +695,7 @@ Reuse pagination and filter components from news.
 ### Step 5.2: Source Form & Pages
 
 **Prompt:**
+
 ```
 Create source form and CRUD pages:
 
@@ -693,6 +728,7 @@ Both pages need:
 ```
 
 **Expected Deliverables:**
+
 - `components/admin/SourceForm.tsx`
 - `app/admin/sources/create/page.tsx`
 - `app/admin/sources/[id]/edit/page.tsx`
@@ -703,6 +739,7 @@ Both pages need:
 ### Step 5.3: Source API Routes
 
 **Prompt:**
+
 ```
 Create API routes for source management:
 
@@ -734,6 +771,7 @@ Create validation schema:
 ```
 
 **Expected Deliverables:**
+
 - `app/api/admin/sources/route.ts`
 - `app/api/admin/sources/[id]/route.ts`
 - `app/api/sources/route.ts` (public)
@@ -746,6 +784,7 @@ Create validation schema:
 ### Step 6.1: News Card Component
 
 **Prompt:**
+
 ```
 Create a reusable news card component at components/news/NewsCard.tsx:
 
@@ -776,6 +815,7 @@ Create companion component:
 ```
 
 **Expected Deliverables:**
+
 - `components/news/NewsCard.tsx`
 - `components/news/NewsCardSkeleton.tsx`
 - Responsive and accessible design
@@ -785,6 +825,7 @@ Create companion component:
 ### Step 6.2: Date Filter Component
 
 **Prompt:**
+
 ```
 Create date filtering component at components/news/DateFilter.tsx:
 
@@ -822,6 +863,7 @@ Make it a client component with proper state handling.
 ```
 
 **Expected Deliverables:**
+
 - `components/news/DateFilter.tsx`
 - `components/news/SourceFilter.tsx`
 - URL query param integration
@@ -832,6 +874,7 @@ Make it a client component with proper state handling.
 ### Step 6.3: News List Page (Landing)
 
 **Prompt:**
+
 ```
 Create the public landing page at app/(public)/page.tsx:
 
@@ -871,6 +914,7 @@ Create supporting components:
 ```
 
 **Expected Deliverables:**
+
 - `app/(public)/page.tsx`
 - `components/layout/Header.tsx`
 - `components/news/NewsList.tsx`
@@ -882,6 +926,7 @@ Create supporting components:
 ### Step 6.4: News Detail Page
 
 **Prompt:**
+
 ```
 Create news detail page at app/(public)/news/[slug]/page.tsx:
 
@@ -925,6 +970,7 @@ Create supporting components:
 ```
 
 **Expected Deliverables:**
+
 - `app/(public)/news/[slug]/page.tsx`
 - `components/news/NewsContent.tsx`
 - `components/news/ImageGallery.tsx`
@@ -936,6 +982,7 @@ Create supporting components:
 ### Step 6.5: Public API Routes
 
 **Prompt:**
+
 ```
 Create public API routes for news data:
 
@@ -965,6 +1012,7 @@ Create helper:
 ```
 
 **Expected Deliverables:**
+
 - `app/api/news/route.ts`
 - `app/api/news/[slug]/route.ts`
 - Cache utilities
@@ -977,6 +1025,7 @@ Create helper:
 ### Step 7.1: Image Upload API Route
 
 **Prompt:**
+
 ```
 Create image upload API route at app/api/admin/upload/route.ts:
 
@@ -1021,6 +1070,7 @@ Error handling:
 ```
 
 **Expected Deliverables:**
+
 - `app/api/admin/upload/route.ts`
 - `lib/image/processor.ts` for image optimization
 - File validation utilities
@@ -1031,6 +1081,7 @@ Error handling:
 ### Step 7.2: Client-Side Upload Component
 
 **Prompt:**
+
 ```
 Create reusable image upload component at components/ui/ImageUploader.tsx:
 
@@ -1073,6 +1124,7 @@ Create supporting components:
 ```
 
 **Expected Deliverables:**
+
 - `components/ui/ImageUploader.tsx`
 - `components/ui/FilePreview.tsx`
 - `components/ui/UploadProgress.tsx`
@@ -1083,6 +1135,7 @@ Create supporting components:
 ### Step 7.3: Supabase Storage Configuration
 
 **Prompt:**
+
 ```
 Create Supabase Storage setup documentation and helper functions:
 
@@ -1113,6 +1166,7 @@ Include TypeScript types and error handling.
 ```
 
 **Expected Deliverables:**
+
 - `docs/supabase-storage-setup.md`
 - `lib/supabase/storage-helpers.ts`
 - `lib/supabase/bucket-config.ts`
@@ -1125,6 +1179,7 @@ Include TypeScript types and error handling.
 ### Step 8.1: Unit Tests
 
 **Prompt:**
+
 ```
 Create unit tests for key utilities and components:
 
@@ -1154,6 +1209,7 @@ Test coverage should be >70% for utilities, >60% for components.
 ```
 
 **Expected Deliverables:**
+
 - Test files for all utilities
 - Component test files
 - Jest configuration
@@ -1164,6 +1220,7 @@ Test coverage should be >70% for utilities, >60% for components.
 ### Step 8.2: E2E Tests
 
 **Prompt:**
+
 ```
 Create E2E tests with Playwright:
 
@@ -1203,6 +1260,7 @@ Create helpers:
 ```
 
 **Expected Deliverables:**
+
 - E2E test files
 - Playwright configuration
 - Page object models
@@ -1213,6 +1271,7 @@ Create helpers:
 ### Step 8.3: Performance Optimization
 
 **Prompt:**
+
 ```
 Optimize the application for performance:
 
@@ -1255,6 +1314,7 @@ Create performance monitoring:
 ```
 
 **Expected Deliverables:**
+
 - Optimized images throughout
 - Dynamic imports for heavy components
 - Database query optimizations
@@ -1266,6 +1326,7 @@ Create performance monitoring:
 ### Step 8.4: Accessibility Improvements
 
 **Prompt:**
+
 ```
 Ensure accessibility compliance (WCAG 2.1 Level AA):
 
@@ -1308,6 +1369,7 @@ Create:
 ```
 
 **Expected Deliverables:**
+
 - Accessibility audit report
 - Fixed accessibility issues
 - `components/ui/SkipToContent.tsx`
@@ -1320,6 +1382,7 @@ Create:
 ### Step 9.1: Environment Setup
 
 **Prompt:**
+
 ```
 Prepare for production deployment:
 
@@ -1358,6 +1421,7 @@ Prepare for production deployment:
 ```
 
 **Expected Deliverables:**
+
 - Production environment variables
 - Updated configuration files
 - Deployment checklist
@@ -1368,6 +1432,7 @@ Prepare for production deployment:
 ### Step 9.2: Vercel Deployment
 
 **Prompt:**
+
 ```
 Deploy Next.js application to Vercel:
 
@@ -1407,6 +1472,7 @@ Create deployment documentation:
 ```
 
 **Expected Deliverables:**
+
 - Deployed application on Vercel
 - Custom domain configured (optional)
 - Deployment documentation
@@ -1417,6 +1483,7 @@ Create deployment documentation:
 ### Step 9.3: Database Migration Strategy
 
 **Prompt:**
+
 ```
 Create safe database migration process:
 
@@ -1458,6 +1525,7 @@ Create documentation:
 ```
 
 **Expected Deliverables:**
+
 - `scripts/migrate.sh`
 - `scripts/rollback.sh`
 - Migration workflow documentation
@@ -1468,6 +1536,7 @@ Create documentation:
 ### Step 9.4: Monitoring & Maintenance
 
 **Prompt:**
+
 ```
 Set up monitoring and maintenance procedures:
 
@@ -1520,6 +1589,7 @@ Create:
 ```
 
 **Expected Deliverables:**
+
 - Monitoring setup
 - Maintenance scripts
 - Logging configuration
@@ -1532,24 +1602,28 @@ Create:
 Use this checklist to track progress:
 
 ### Phase 1: Setup ☐
+
 - [ ] Next.js project initialized
 - [ ] Environment variables configured
 - [ ] Dependencies installed
 - [ ] Folder structure created
 
 ### Phase 2: Database ☐
+
 - [ ] Prisma schema created
 - [ ] Migrations run
 - [ ] Seed data created
 - [ ] Database utilities built
 
 ### Phase 3: Authentication ☐
+
 - [ ] Supabase configured
 - [ ] NextAuth setup
 - [ ] Middleware created
 - [ ] Login page built
 
 ### Phase 4: Admin News ☐
+
 - [ ] Admin layout created
 - [ ] News list page
 - [ ] News form component
@@ -1557,12 +1631,14 @@ Use this checklist to track progress:
 - [ ] News API routes
 
 ### Phase 5: Admin Sources ☐
+
 - [ ] Source list page
 - [ ] Source form
 - [ ] Create/Edit pages
 - [ ] Source API routes
 
 ### Phase 6: Public Pages ☐
+
 - [ ] News card component
 - [ ] Date filter component
 - [ ] Landing page
@@ -1570,18 +1646,21 @@ Use this checklist to track progress:
 - [ ] Public API routes
 
 ### Phase 7: Images ☐
+
 - [ ] Upload API route
 - [ ] Image uploader component
 - [ ] Supabase storage configured
 - [ ] Image optimization
 
 ### Phase 8: Testing ☐
+
 - [ ] Unit tests written
 - [ ] E2E tests written
 - [ ] Performance optimized
 - [ ] Accessibility fixed
 
 ### Phase 9: Deployment ☐
+
 - [ ] Production environment setup
 - [ ] Vercel deployment
 - [ ] Database migrated
