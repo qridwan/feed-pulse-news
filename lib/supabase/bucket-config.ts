@@ -4,8 +4,8 @@
  */
 
 export const BUCKETS = {
-  NEWS_IMAGES: "news-images",
-  SOURCE_LOGOS: "source-logos",
+  NEWS_IMAGES: "news-archives/news-images",
+  SOURCE_LOGOS: "news-archives/source-logos",
 } as const;
 
 export type StorageBucket = (typeof BUCKETS)[keyof typeof BUCKETS];
@@ -22,8 +22,8 @@ export const ALLOWED_MIME_TYPES = [
 
 export type AllowedMimeType = (typeof ALLOWED_MIME_TYPES)[number];
 
-/** Max file size in bytes (5 MB) */
-export const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
+/** Max file size in bytes (100 kb) */
+export const MAX_FILE_SIZE_BYTES = 100 * 1024;
 
 export interface BucketConfig {
   name: string;
@@ -51,7 +51,7 @@ export const BUCKET_CONFIGS: Record<StorageBucket, BucketConfig> = {
 export function buildPublicUrl(
   supabaseUrl: string,
   bucket: string,
-  path: string
+  path: string,
 ): string {
   const base = supabaseUrl.replace(/\/$/, "");
   const encodedPath = path.split("/").map(encodeURIComponent).join("/");

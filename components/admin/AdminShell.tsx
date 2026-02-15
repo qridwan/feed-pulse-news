@@ -16,22 +16,32 @@ export function AdminShell({
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 
 	return (
-		<div className="min-h-screen bg-[#f5f5f7] text-neutral-900">
+		<div className="min-h-screen bg-neutral-50">
+			{/* Mobile Menu */}
 			<MobileMenu open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+			{/* Header */}
 			<Header user={user} onMenuClick={() => setSidebarOpen(true)} />
-			<div className="flex gap-4">
+
+			{/* Main Layout */}
+			<div className="flex">
+				{/* Desktop Sidebar */}
 				<Sidebar onNavigate={() => setSidebarOpen(false)} />
-				<main className="flex-1 lg:pl-64 min-h-[calc(100vh-3.5rem)] lg:min-h-[calc(100vh-4rem)] pt-14 lg:pt-16 px-4 lg:px-8 pb-8 transition-all duration-200">
-					{children}
+
+				{/* Main Content */}
+				<main className="flex-1 lg:ml-64 pt-18 lg:pt-20 transition-all duration-300">
+					<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+						{children}
+					</div>
 				</main>
 			</div>
-			{/* Overlay when mobile menu is open */}
+
+			{/* Mobile Overlay */}
 			{sidebarOpen && (
-				<button
-					type="button"
-					aria-label="Close menu"
-					className="fixed inset-0 z-40 bg-black/20 backdrop-blur-[2px] lg:hidden transition-opacity duration-200"
+				<div
 					onClick={() => setSidebarOpen(false)}
+					className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm lg:hidden animate-in fade-in duration-200"
+					aria-hidden="true"
 				/>
 			)}
 		</div>

@@ -24,8 +24,14 @@ export interface ReferencedPath {
  * Parse a Supabase Storage public URL into bucket and path.
  * Returns null if the URL is not a Supabase public object URL.
  */
-export function parseSupabasePublicUrl(url: string | null | undefined): ReferencedPath | null {
-  if (!url || typeof url !== "string" || !url.includes(SUPABASE_PUBLIC_OBJECT_PREFIX)) {
+export function parseSupabasePublicUrl(
+  url: string | null | undefined,
+): ReferencedPath | null {
+  if (
+    !url ||
+    typeof url !== "string" ||
+    !url.includes(SUPABASE_PUBLIC_OBJECT_PREFIX)
+  ) {
     return null;
   }
   const idx = url.indexOf(SUPABASE_PUBLIC_OBJECT_PREFIX);
@@ -41,7 +47,7 @@ export function parseSupabasePublicUrl(url: string | null | undefined): Referenc
  * Collect all storage paths that are referenced in the database.
  */
 export async function listReferencedStoragePaths(): Promise<Set<string>> {
-  const key = (bucket: string, path: string) => `${bucket}:${path}`;
+  const key = (bucket: string, path: string) => `${bucket}/uploads:${path}`;
   const set = new Set<string>();
 
   const [thumbnails, newsImages, logos] = await Promise.all([
@@ -68,7 +74,7 @@ export async function listReferencedStoragePaths(): Promise<Set<string>> {
 
 async function listAllPathsInBucket(
   bucket: string,
-  prefix: string
+  prefix: string,
 ): Promise<string[]> {
   const paths: string[] = [];
   const { files, folders, error } = await listFiles(bucket, prefix);
@@ -106,7 +112,7 @@ export interface OrphanCleanupResult {
  * Find objects in the given buckets that are not referenced in the DB, and delete them (unless dryRun).
  */
 export async function findAndDeleteOrphanedImages(
-  options: OrphanCleanupOptions = {}
+  options: OrphanCleanupOptions = {},
 ): Promise<OrphanCleanupResult> {
   const { dryRun = false, buckets = Object.values(BUCKETS) } = options;
   const referenced = await listReferencedStoragePaths();
